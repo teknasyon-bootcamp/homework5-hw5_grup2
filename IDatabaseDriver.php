@@ -1,7 +1,7 @@
 <?php
 
 
-Interface IIDatabaseDriver
+Interface IDatabaseDriver
 {
 
     public function all();
