@@ -2,7 +2,7 @@
 
 require_once 'IDatabaseDriver.php';
 
-class Sql implements IDatabaseDriver
+class MySQL implements IDatabaseDriver
 {
 
     public function get()
