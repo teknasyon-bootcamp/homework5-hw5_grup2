@@ -12,9 +12,9 @@ class DynamicDB
         $driver = $response["engine"];
         
         if ($driver === "mysql") {
-            require_once 'Sql.php';
+            require_once 'MySQL.php';
             echo "mysql";
-            $this->dbHandler = new Sql();
+            $this->dbHandler = new MySQL();
         } elseif ($driver === "mongodb") {
             require_once 'MongoDB.php';
             echo "mongodb";

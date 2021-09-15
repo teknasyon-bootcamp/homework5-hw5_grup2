@@ -14,5 +14,14 @@ class MySQL implements IDatabaseDriver
     public function find()
     {
         // TODO: Implement find() method.
+    }public function get()
+    {
+        return "yyyyMongoDB";
+    }
+
+
+    public function find()
+    {
+        // TODO: Implement find() method.
     }
 }
