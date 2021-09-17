@@ -1,5 +1,5 @@
 <?php
-require_once '../DynamicDB.php';
+echo __DIR__.'/../DynamicDB.php';
 
 class Book extends DynamicDB
 {

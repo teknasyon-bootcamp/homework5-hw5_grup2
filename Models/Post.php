@@ -1,5 +1,5 @@
 <?php
-require_once '../DynamicDB.php';
+echo __DIR__.'/../DynamicDB.php';
 
 class Post extends DynamicDB
 {
