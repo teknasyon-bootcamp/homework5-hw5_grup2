@@ -4,19 +4,23 @@ require_once 'IDatabaseDriver.php';
 
 class MongoDB implements IDatabaseDriver
 {
+
+    public $connection = require_once "config.php";
+
+    //$uri = mongodb:[$connection['user'],:$connection['password']@]host1[:$connection['port']][/[defaultAuthDb][?$connection['options']]];
+
     protected $client = new MongoDB\Client("mongodb://localhost:27017/odev5");
 
-    public function __construct(string $protocol, string $host, string $user, string $pass, 
-    string $dbname, array $options)
-    {
-        $protocol = ""
-        $host = "mariadb",
-        $user = "root",
-        $pass = "root",
-        $dbname = $client->mydb;
-
+    public function Connect(string $protocol, string $host, string $user, string $pass, 
+    string $dbname, array $options){
+        $protocol = "";
+        $host = "mongodb";
+        $user = $connection['user'];
+        $pass = $connection['password'];
+        $dbname = $client->mydb; //Buraya tekrar bakalim
     }
-    public function all(string $collection):array
+
+    public function All(string $collection = $client->books):array
     {
         //return "MongoDB";
         $cursor = $collection->find();
@@ -29,10 +33,10 @@ class MongoDB implements IDatabaseDriver
 
         }
     }
-    public function find(string $collection, int $id):bool
+    public function find(string $collection = $client->books, mixed $id):mixed
     {
-        
 
+        $result = $collection->findOne(['_id' =>new \MongoDB\BSON\ObjectId($id)]);
 
     }
     public function create(string $collection, array $values, i):bool
