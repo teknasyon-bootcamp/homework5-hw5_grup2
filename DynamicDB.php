@@ -1,8 +1,5 @@
 <?php
 
-
-require_once "MySQL.php";
-
 $response = require_once "config.php";
 $driver = $response["engine"];
 
