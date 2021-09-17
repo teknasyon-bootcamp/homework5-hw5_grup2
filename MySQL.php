@@ -1,6 +1,8 @@
 <?php
 
-class MySQL
+require_once "IDatabaseDriver.php";
+
+class MySQL implements IDatabaseDriver
 {
     private static $tableColumns = "";
     private static $tableValueParams = "";
