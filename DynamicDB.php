@@ -1,25 +1,22 @@
 <?php
 
+$response = require_once "config.php";
+$driver = $response["engine"];
 
-require_once "MySQL.php";
+$dbHandler = null;
 
-class DynamicDB
-{
-    public $dbHandler;
+if ($driver === "mysql") {
+    require_once 'MySQL.php';
 
-    public function __construct()
+    class DynamicDB extends MySQL
     {
-        $response = require_once "config.php";
-        $driver = $response["engine"];
         
-        if ($driver === "mysql") {
-            require_once 'MySQL.php';
-            echo "mysql";
-            $this->dbHandler = new MySQL();
-        } elseif ($driver === "mongodb") {
-            require_once 'MongoDB.php';
-            echo "mongodb";
-            $this->dbHandler = new MongoDB();
-        }
+    }
+} elseif ($driver === "mongodb") {
+
+    require_once 'MongoDB.php';
+    class DynamicDB extends MongoDB
+    {
+        
     }
 }

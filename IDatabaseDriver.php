@@ -8,7 +8,7 @@ Interface IDatabaseDriver
 
     public static function find(int $id);
 
-    public static function where(string $columnName, string $condition = "=", string|int $value);
+    public static function where(string $columnName, string $condition = "=", string|int $value = null);
 
     public function update();
 
