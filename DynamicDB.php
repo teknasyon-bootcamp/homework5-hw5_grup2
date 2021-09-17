@@ -3,8 +3,6 @@
 $response = require_once "config.php";
 $driver = $response["engine"];
 
-$dbHandler = null;
-
 if ($driver === "mysql") {
     require_once 'MySQL.php';
 
@@ -13,8 +11,8 @@ if ($driver === "mysql") {
         
     }
 } elseif ($driver === "mongodb") {
-
     require_once 'MongoDB.php';
+    $dbHandler = null;
     class DynamicDB extends MongoDB
     {
         
