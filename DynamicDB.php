@@ -13,6 +13,8 @@ if ($driver === "mysql") {
         
     }
 } elseif ($driver === "mongodb") {
+
+    require_once 'MongoDB.php';
     class DynamicDB extends MongoDB
     {
         
