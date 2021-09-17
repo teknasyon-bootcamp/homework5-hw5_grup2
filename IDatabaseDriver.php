@@ -4,9 +4,11 @@
 Interface IDatabaseDriver
 {
 
-    public function all();
+    public static function all();
 
-    public function find(int $id);
+    public static function find(int $id);
+
+    public static function where(string $columnName, string $condition = "=", string|int $value);
 
     public function update();
 
