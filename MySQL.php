@@ -1,6 +1,6 @@
 <?php
 
-class DB
+class MySQL
 {
     private static $tableColumns = "";
     private static $tableValueParams = "";
