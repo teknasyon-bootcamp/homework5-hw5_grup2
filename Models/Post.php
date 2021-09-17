@@ -1,7 +1,7 @@
 <?php
-require_once "DB.class.php";
+require_once './DynamicDB.php';
 
-class Post extends DB
+class Post extends DynamicDB
 {
     public int $id;
     public int $book_id;

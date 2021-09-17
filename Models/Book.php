@@ -1,7 +1,7 @@
 <?php
-require_once "./DB.class.php";
+require_once './DynamicDB.php';
 
-class Book extends DB
+class Book extends DynamicDB
 {
     public int $id;
     public string $name = '';
@@ -11,5 +11,3 @@ class Book extends DB
     {
     }
 }
-?>
-
