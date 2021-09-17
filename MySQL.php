@@ -16,7 +16,7 @@ class MySQL implements IDatabaseDriver
 
         // Create the pdo object 
         try {
-            $pdo = new PDO('mysql:host=mariadb;dbname=blog', 'root', 'root');
+            $pdo = new PDO('mysql:host=mariadb;dbname=odev5', 'root', 'root');
         } catch (\PDOException $ex) {
             exit("Veritabanına bağlanırken bir hata ile karşılaşıldı. {$ex->getMessage()}");
         }
