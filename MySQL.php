@@ -82,6 +82,7 @@ class MySQL implements IDatabaseDriver
         return $result;
     }
 
+    // Add where clausure to pdoStatement 
     public static function where(string $columnName, string $condition = "=", $value = null)
     {
         self::setTableName();
