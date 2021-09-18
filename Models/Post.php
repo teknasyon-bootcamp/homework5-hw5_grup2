@@ -8,6 +8,8 @@ class Post extends DynamicDB
     public string $title = '';
     public string $content = '';
 
+    public static $tableName = "book_posts";
+
     public function __construct()
     {
     }

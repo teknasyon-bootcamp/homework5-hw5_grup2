@@ -7,6 +7,8 @@ class Section extends DynamicDB
     public int $book_id;
     public string $title = '';
 
+    public static $tableName = "book_sections";
+
     public function __construct()
     {
     }
