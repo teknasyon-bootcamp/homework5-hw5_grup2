@@ -6,7 +6,7 @@ Interface IDatabaseDriver
 
     public static function all();
 
-    public static function find(int $id);
+    public static function find(mixed $id);
 
     public static function where(string $columnName, string $condition = "=", string|int $value = null);
 
