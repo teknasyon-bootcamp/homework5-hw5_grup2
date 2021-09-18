@@ -105,11 +105,18 @@ class MySQL implements IDatabaseDriver
 
     }
 
+    // Get all records of query
     public static function get()
     {        
         return static::$storedStatement->fetchAll(PDO::FETCH_CLASS, static::class);
     }
 
+
+    // Get first record
+    public static function first()
+    {        
+        return static::$storedStatement->fetchObject(static::class);
+    }
     /**
      * Creates some part of SQL Queries
      * 
