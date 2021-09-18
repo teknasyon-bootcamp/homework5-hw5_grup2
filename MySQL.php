@@ -68,7 +68,7 @@ class MySQL implements IDatabaseDriver
      * @return static::object|null
      * 
      */
-    public static function find(int $id)
+    public static function find($id)
     {
         self::where('id','=', $id);
 
