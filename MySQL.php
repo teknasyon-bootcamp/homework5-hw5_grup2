@@ -8,6 +8,9 @@ class MySQL implements IDatabaseDriver
     private static $tableValueParams = "";
     private static $tableSetParams = "";
     private static $tableName = "";
+    private static $conditionCounter = 0;
+    private static ?string $storedQuery;
+    private static ?PDOStatement $storedStatement;
 
 
     // Connect the database and set tableName
@@ -21,6 +24,14 @@ class MySQL implements IDatabaseDriver
             exit("Veritabanına bağlanırken bir hata ile karşılaşıldı. {$ex->getMessage()}");
         }
 
+        // Get table name
+        self::setTableName();
+        return $pdo;
+    }
+
+    // Define table name
+    public static function setTableName()
+    {
         //Define table name the will be using on queries
         if (static::$tableName) {
             // That means there is a custom tableName property variable on Model
@@ -29,8 +40,6 @@ class MySQL implements IDatabaseDriver
             // That means that there isn't customization. It will be apply  default table naming 
             self::$tableName  = strtolower(static::class) . 's';
         }
-
-        return $pdo;
     }
 
 
@@ -59,23 +68,46 @@ class MySQL implements IDatabaseDriver
      * @return static::object|null
      * 
      */
-    public static function find(int $id): static | null
+    public static function find(int $id)
     {
-        $query = "SELECT * FROM " . self::$tableName . " WHERE id=:id";
+        self::where('id','=', $id);
 
-        //Prepare query and bind variables
-        $namedQuery = self::connect()->prepare($query);
-
-        $namedQuery->bindValue(':id', $id);
-
-        $namedQuery->execute();
+        self::$storedStatement->execute();
 
         // Get record as static::object 
-        $result = $namedQuery->fetchObject(static::class);
+        $result = self::$storedStatement->fetchObject(static::class);
 
         $result = $result ?: null;
 
         return $result;
+    }
+
+    public static function where(string $columnName, string $condition = "=", $value = null)
+    {
+        self::setTableName();
+        if (empty(self::$storedQuery)) {
+            self::$storedQuery = "SELECT * FROM " . self::$tableName;
+        }
+        
+        if (self::$conditionCounter < 1) {
+            self::$storedQuery .= " WHERE $columnName$condition:$columnName";
+        } else {
+            self::$storedQuery .= " and $columnName$condition:$columnName";
+        }
+        //Prepare query and bind variables
+        self::$storedStatement = self::connect()->prepare(self::$storedQuery);
+
+       
+        self::$storedStatement->bindParam(':id', $value);
+        self::$storedStatement->execute();      
+
+        return new static;
+
+    }
+
+    public static function get()
+    {        
+        return static::$storedStatement->fetchAll(PDO::FETCH_CLASS, static::class);
     }
 
     /**
