@@ -121,6 +121,24 @@ class MySQL implements IDatabaseDriver
     {        
         return static::$storedStatement->fetchObject(static::class);
     }
+
+    /**
+     * Get all child class's object 
+     * 
+     * @param  string $class 
+     * @return 
+     */
+    public function hasMany($class)
+    {
+        self::$storedQuery = null;
+        self::$conditionCounter = 0;
+        $result = $class::where(strtolower(static::class) . "_id", '=', $this->id)->get();
+
+        $result = $result ?: null;
+
+        return $result;
+    }
+
     /**
      * Creates some part of SQL Queries
      * 
