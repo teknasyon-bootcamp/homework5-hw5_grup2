@@ -70,7 +70,7 @@ class MySQL implements IDatabaseDriver
      */
     public static function find($id)
     {
-        self::where('id','=', $id);
+        self::where('id', '=', $id);
 
         self::$storedStatement->execute();
 
