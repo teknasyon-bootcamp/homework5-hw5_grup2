@@ -21,7 +21,8 @@
             echo '<a class="navbar-brand" href=index.php?book=' . $book->id . '>' . $book->name . "</a>";
             echo '</td>';
             echo '<td>' . $book->author . '<div class="d-flex flex-row-reverse"><button class="btn btn-warning" type="button"data-toggle="modal" data-target="#update_' . $book->id . '"><span class="glyphicon glyphicon-edit"></span>Update</button>'
-            . "\n" . '<a href="index.php?action=delete&book=' . $book->id . '"class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Delete</a></div>
+            . "&nbsp;&nbsp;
+            " . '<a href="index.php?action=delete&book=' . $book->id . '"class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Delete</a></div>
             </td>';
            
             echo "</tr>";
