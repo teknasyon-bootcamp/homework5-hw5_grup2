@@ -86,24 +86,27 @@ class MySQL implements IDatabaseDriver
     public static function where(string $columnName, string $condition = "=", $value = null)
     {
         self::setTableName();
+
         if (empty(self::$storedQuery)) {
+
             self::$storedQuery = "SELECT * FROM " . self::$tableName;
         }
         
         if (self::$conditionCounter < 1) {
+            self::$conditionCounter++;
             self::$storedQuery .= " WHERE $columnName$condition:$columnName";
         } else {
             self::$storedQuery .= " and $columnName$condition:$columnName";
         }
+
         //Prepare query and bind variables
         self::$storedStatement = self::connect()->prepare(self::$storedQuery);
 
+        self::$storedStatement->bindParam(":$columnName", $value);
        
-        self::$storedStatement->bindParam(':id', $value);
         self::$storedStatement->execute();      
 
         return new static;
-
     }
 
     // Get all records of query
