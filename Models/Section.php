@@ -9,8 +9,9 @@ class Section extends DynamicDB
 
     public static $tableName = "book_sections";
 
-    public function __construct()
+    public function Book()
     {
+        return $this->hasOne(Post::class);
     }
 }
 

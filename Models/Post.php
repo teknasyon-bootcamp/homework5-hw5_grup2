@@ -10,7 +10,8 @@ class Post extends DynamicDB
 
     public static $tableName = "book_posts";
 
-    public function __construct()
+    public function book()
     {
+        return $this->hasOne(Book::class);
     }
 }

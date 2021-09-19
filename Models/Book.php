@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__.'/../DynamicDB.php';
+require_once __DIR__ . '/../DynamicDB.php';
 
 class Book extends DynamicDB
 {
@@ -7,7 +7,14 @@ class Book extends DynamicDB
     public string $name = '';
     public string $author = '';
 
-    public function __construct()
+    public function posts()
     {
+        return $this->hasMany(Post::class);
+    }
+
+
+    public function sections()
+    {
+        return $this->hasMany(Section::class);
     }
 }
