@@ -29,8 +29,8 @@ return [
     */
     'host' => 'mariadb',
     'port' => 3306,
-    'user' => 'default',
-    'password' => 'secret',
+    'user' => 'root',
+    'password' => 'root',
     'options' => [],
 
     /*
