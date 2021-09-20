@@ -51,12 +51,12 @@ switch ($action) {
 
         $database->create('book_sections', $values);
 
-        header("Refresh:0; url=section.php");
+        header("Refresh:0; url=section.php?book=$book_id");
         break;
     case 'delete':
         $database->delete('book_sections', $sectionId);
 
-        header("Refresh:0; url=section.php");
+        header("Refresh:0; url=section.php?book=$book_id");
         break;
 }
 ?>
@@ -117,7 +117,7 @@ switch ($action) {
                         echo '<a class="navbar-brand" href=post.php?section=' . $section['id'] . '>' . $section['title'] . "</a>";
                         echo '</td>';
                         echo '<td><button class="btn btn-warning" type="button"data-toggle="modal" data-target="#update_' .  $section['id'] . '"><span class="glyphicon glyphicon-edit"></span>Update</button>'
-                            . "\n" . '<a href="section.php?action=delete&section=' .  $section['id'] . '"class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Delete</a></td>';
+                            . "\n" . '<a href="section.php?action=delete&book='.$section['book_id'].'&section=' .  $section['id'] . '"class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Delete</a></td>';
                         echo "</tr>";
                     }
                 }
@@ -169,6 +169,7 @@ switch ($action) {
                         <div class="col-md-8">
                             <div class="form-group">
                                 <label>Title</label>
+                                <input type="hidden" name="book" value="<?=$_GET["book"]?>">
                                 <input type="text" class="form-control" name="title" />
                             </div>
                         </div>
