@@ -2,24 +2,26 @@
 
 namespace Database;
 
+use \MongoDB\BSON\ObjectId;
+
 class MongoDB implements IDatabaseDriver
 {
-    public function __construct(string $protocol, string $host, string $user, string $pass, string $dbname, array $options)
+    protected \MongoDB\Client $client;
+    protected $dbname;
+
+    public function __construct(string $protocol, string $host, string $user, string $pass, string $dbname, ?array $options)
     {
-        try{
-            //$this->client = new \MongoDB\Client("mongodb://$user:$pass@$host:$protocol/$dbname");//Düzenlenecek;
-
+        try {
+            $this->client = new \MongoDB\Client('mongodb://mongo');
             $this->dbname = $dbname;
-            $this->client = new \MongoDB\Client("mongodb://localhost:27017");
-
-        }catch (\MongoException $exception){
+        } catch (\MongoException $exception) {
             echo $exception->getMessage();
         }
     }
 
     public function all(string $table): array
     {
-        $db= $this->client->selectDatabase($this->dbname);
+        $db = $this->client->selectDatabase($this->dbname);
         $collection = $db->$table;
         $result = $collection->find()->toArray();
         return $result;
@@ -27,19 +29,26 @@ class MongoDB implements IDatabaseDriver
 
     public function find(string $table, mixed $id): mixed
     {
-        $db= $this->client->selectDatabase($this->dbname);
+        $db = $this->client->selectDatabase($this->dbname);
         $collection = $db->$table;
-        $result = $collection->findOne(['_id' =>new \MongoDB\BSON\ObjectId($id)]);
+        $result = $collection->findOne(['_id' => new \MongoDB\BSON\ObjectId($id)]);
         return $result;
     }
 
-    public function create(string $table, array $values): bool 
+    public function where(string $table, string $columnName, mixed $id): mixed
     {
         $db = $this->client->selectDatabase($this->dbname);
         $collection = $db->$table;
-        $insertManyResult = $collection->insertMany($values);
-        return  $insertManyResult->isAcknowledged();
+        $result = $collection->findOne([$columnName => new \MongoDB\BSON\ObjectId($id)]);
+        return $result;
+    }
 
+    public function create(string $table, array $values): bool
+    {
+        $db = $this->client->selectDatabase($this->dbname);
+        $collection = $db->$table;
+        $insertManyResult = $collection->insertMany([$values]);
+        return  $insertManyResult->isAcknowledged();
     }
 
     public function update(string $table, mixed $id, array $values): bool
@@ -48,7 +57,7 @@ class MongoDB implements IDatabaseDriver
         $collection = $db->$table;
         $updateResult = $collection->updateMany(
             ['_id' => new \MongoDB\BSON\ObjectId($id)],
-            ['$set'=>$values]
+            ['$set' => [$values]]
         );
         return $updateResult->isAcknowledged();
     }
