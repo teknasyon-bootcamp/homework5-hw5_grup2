@@ -1,6 +1,6 @@
 <?php
 
-require_once "IDatabaseDriver.php";
+namespace Database;
 
 class MySQL implements IDatabaseDriver
 {
@@ -104,7 +104,7 @@ class MySQL implements IDatabaseDriver
         $query = "DELETE FROM $table WHERE id = :id";
         $pdoStatement = $this->pdo->prepare($query);
         $pdoStatement->bindParam(":id", $id);
-        
+
         return $pdoStatement->execute();
     }
 }

@@ -1,11 +1,8 @@
 <?php
-
-require_once __DIR__ . '/MySQL.php';
-require_once __DIR__ . '/MongoDB.php';
+namespace Database;
 
 class DynamicDB
 {
-
     protected IDatabaseDriver $driver;
 
     public function __construct()
