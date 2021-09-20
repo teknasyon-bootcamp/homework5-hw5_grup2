@@ -57,7 +57,7 @@ class MongoDB implements IDatabaseDriver
         $collection = $db->$table;
         $updateResult = $collection->updateMany(
             ['_id' => new \MongoDB\BSON\ObjectId($id)],
-            ['$set' => [$values]]
+            ['$set' => $values]
         );
         return $updateResult->isAcknowledged();
     }
