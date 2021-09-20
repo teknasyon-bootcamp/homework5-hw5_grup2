@@ -3,9 +3,6 @@
 require_once __DIR__ . '/MySQL.php';
 require_once __DIR__ . '/MongoDB.php';
 
-
-
-
 class DynamicDB
 {
 
@@ -51,28 +48,3 @@ class DynamicDB
         return $this->driver->delete($table, $id);
     }
 }
-
-
-/*
-if ($driver == "mysql") {
-    require_once __DIR__.'/MySQL.php';
-
-    class DynamicDB extends MySQL
-    {
-
-        public function __construct()
-        {
-
-            $host = $response["host"];
-            parent::__construct();
-        }
-        
-    }
-} elseif ($driver == "mongodb") {
-    require_once __DIR__.'/MongoDB.php';
-
-    class DynamicDB extends MongoDB
-    {
-        
-    }
-}*/
