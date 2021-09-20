@@ -1,33 +1,33 @@
-<?php 
+<?php
 require_once __DIR__."/vendor/autoload.php";
 
 use Database\DynamicDB;
 
 $database = new DynamicDB;
 
-// Get all books in my list 
-$books = $database->all('books');
+// Get all sections in my list 
+$sections = $database->all('sections');
 
-// Defines necessary variables for my book list and sets its default values
+// Defines necessary variables for my section list and sets its default values
 $action = '';
-$bookId = '';
-$name = '';
-$author = '';
+$sectionId = '';
+$book_id='';
+$title = '';
 //get the value of action variable which was given in the url
 if (isset($_GET['action'])) { //isset function checks whether a variable is declared and is different than null. 
     $action = $_GET['action'];
 }
-if (isset($_REQUEST['book'])) {
-    $bookId = $_REQUEST['book'];
+if (isset($_REQUEST['section'])) {
+    $sectionId = $_REQUEST['section'];
 }
-if (isset($_POST['name'])) {
-    $name = $_POST['name'];
+if (isset($_POST['book_id'])) {
+    $book_id = $_POST['book_id'];
 }
-if (isset($_POST['author'])) {
-    $author = $_POST['author'];
+if (isset($_POST['title'])) {
+    $title = $_POST['title'];
 }
 /**
- * Performs create new book, update and delete existing post 
+ * Performs create new section, update and delete existing section 
  * using the value of action variable in the url    
  */
 
@@ -35,33 +35,32 @@ switch ($action) {
     case 'edit':
 
         $values = [
-            'name' => $name,
-            'author' => $author,
+            'book_id'=>$book_id,
+            'title' => $title,
         ];
 
-        $database->update('books', $bookId, $values);
+        $database->update('sections', $sectionId, $values);
 
         // Sends a raw http header to the browser in a raw form
-        header("Refresh:0; url=index.php");
+        header("Refresh:0; url=section.php");
         break;
     case 'create':
         $values = [
-            'name' => $name,
-            'author' => $author,
+            'book_id'=>$book_id,
+            'title' => $title,
         ];
 
-        $database->create('books', $values);
+        $database->create('sections', $values);
 
-        header("Refresh:0; url=index.php");
+        header("Refresh:0; url=section.php");
         break;
     case 'delete':
-        $database->delete('books', $bookId);
+        $database->delete('sections', $sectionId);
 
-        header("Refresh:0; url=index.php");
+        header("Refresh:0; url=section.php");
         break;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="tr">
 
@@ -69,7 +68,7 @@ switch ($action) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title> Books</title>
+    <title> Sections</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -97,56 +96,42 @@ switch ($action) {
     </nav>
     <div class="col-md-3"></div>
     <div class="col-md-12 well well-sm">
-        <h3 class="text-primary">BOOKS</h3>
+        <h3 class="text-primary">SECTIONS</h3>
         <hr style="border-top:1px dotted #ccc;" />
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#form_modal"><span class="glyphicon glyphicon-plus"></span> Add</button>
         <br /><br />
         <table class="table table-bordered">
             <thead class="alert-info">
                 <tr>
-                    <th>Name</th>
-                    <th>Author</th>
+                    <th>Title</th>
                     <th>Operations</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- List created posts -->
+                <!-- List created sections -->
                 <?php
-                if (isset($_GET["book"])) {
-
-                    $id = $_GET["book"];
-
-                    $book= $database->find('books',$id);
-
-                    if (is_null($book)) {
-                        echo "Kitap Bulunamadı";
-                    } else {
-
-                        echo '<td>' . $book['name'] . '</td>';
-                        echo '<td>' . $book['author'] . '</td>';
-                    }
-                } else {
-                    // Show all books if there isn't any specific get request
-                    foreach ($books as $book) {
+                $id = $_GET["book"];
+                foreach ($sections as $section) {
+                    if ($id == $section['book_id']) {
                         echo "<tr>";
                         echo '<td>';
-                        echo '<a class="navbar-brand" href=section.php?book=' . $book['id'] . '>' . $book['name'] . "</a>";
+                        echo '<a class="navbar-brand" href=post.php?section=' . $section['id'] . '>' . $section['title'] . "</a>";
                         echo '</td>';
-                        echo '<td>' . $book['author'] . '</td>';
-                        echo '<td><button type="button" data-toggle="modal" data-target="#update_' . $book['id'] .'"class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span>Update</button>
-                        <a href="index.php?action=delete&book=' . $book['id'] . '"class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Delete</a></td>';
+                        echo '<td><button class="btn btn-warning" type="button"data-toggle="modal" data-target="#update_' .  $section['id'] . '"><span class="glyphicon glyphicon-edit"></span>Update</button>'
+                            . "\n" . '<a href="section.php?action=delete&section=' .  $section['id'] . '"class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Delete</a></td>';
                         echo "</tr>";
                     }
                 }
+
                 ?>
             </tbody>
         </table>
     </div>
-    <?php foreach ($books as $book) : ?>
-        <div class="modal fade" id="update_<?= $book['id'] ?>">
+    <?php foreach ($sections as $section) : ?>
+        <div class="modal fade" id="update_<?= $section['id'] ?>">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form action="index.php?action=edit&book=<?= $book['id'] ?>" method="POST">
+                    <form action="section.php?action=edit&section=<?= $section['id'] ?>" method="POST">
                         <div class="modal-header">
                             <h3 class="modal-title">Update</h3>
                         </div>
@@ -154,15 +139,11 @@ switch ($action) {
                             <div class="col-md-2"></div>
                             <div class="col-md-8">
                                 <div class="form-group">
-                                    <label>Name</label>
-                                    <input type="text" class="form-control" value="<?= $book['name'] ?>" name="name" />
+                                    <label>Title</label>
+                                    <input type="text" class="form-control" value="<?= $section['title'] ?>" name="title" />
                                     <!-- A hidden field let us include data that cannot be seen or modified 
                             when the form is submitted. -->
-                                    <input type="hidden" class="form-control" value="<?php $book['id'] ?>" name="id" />
-                                </div>
-                                <div class="form-group">
-                                    <label>Author</label>
-                                    <input type="text" class="form-control" value="<?= $book['author'] ?>" name="author" />
+                                    <input type="hidden" class="form-control" value="<?php $section['id'] ?>" name="id" />
                                 </div>
                             </div>
                         </div>
@@ -180,7 +161,7 @@ switch ($action) {
     <div class="modal fade" id="form_modal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="index.php?action=create" method="POST">
+                <form action="section.php?action=create" method="POST">
                     <div class="modal-header">
                         <h3 class="modal-title">Add</h3>
                     </div>
@@ -188,12 +169,8 @@ switch ($action) {
                         <div class="col-md-2"></div>
                         <div class="col-md-8">
                             <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" class="form-control" name="name" />
-                            </div>
-                            <div class="form-group">
-                                <label>Author</label>
-                                <input type="text" class="form-control" name="author" />
+                                <label>Title</label>
+                                <input type="text" class="form-control" name="title" />
                             </div>
                         </div>
                     </div>
