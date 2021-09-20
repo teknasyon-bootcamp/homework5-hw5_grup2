@@ -1,12 +1,12 @@
 <?php
-require_once __DIR__."/vendor/autoload.php";
+require_once __DIR__."/../vendor/autoload.php";
 
 use Database\DynamicDB;
 
 $database = new DynamicDB;
 
 // Get all sections in my list 
-$sections = $database->all('sections');
+$sections = $database->all('book_sections');
 
 // Defines necessary variables for my section list and sets its default values
 $action = '';
@@ -20,8 +20,8 @@ if (isset($_GET['action'])) { //isset function checks whether a variable is decl
 if (isset($_REQUEST['section'])) {
     $sectionId = $_REQUEST['section'];
 }
-if (isset($_POST['book_id'])) {
-    $book_id = $_POST['book_id'];
+if (isset($_REQUEST['book'])) {
+    $book_id = $_REQUEST['book'];
 }
 if (isset($_POST['title'])) {
     $title = $_POST['title'];
@@ -35,14 +35,13 @@ switch ($action) {
     case 'edit':
 
         $values = [
-            'book_id'=>$book_id,
+            'id'=>$sectionId,
             'title' => $title,
         ];
 
-        $database->update('sections', $sectionId, $values);
-
+        $database->update('book_sections', $sectionId, $values);
         // Sends a raw http header to the browser in a raw form
-        header("Refresh:0; url=section.php");
+        header("Refresh:0; url=section.php?book=$book_id");
         break;
     case 'create':
         $values = [
@@ -50,12 +49,12 @@ switch ($action) {
             'title' => $title,
         ];
 
-        $database->create('sections', $values);
+        $database->create('book_sections', $values);
 
         header("Refresh:0; url=section.php");
         break;
     case 'delete':
-        $database->delete('sections', $sectionId);
+        $database->delete('book_sections', $sectionId);
 
         header("Refresh:0; url=section.php");
         break;
@@ -110,7 +109,7 @@ switch ($action) {
             <tbody>
                 <!-- List created sections -->
                 <?php
-                $id = $_GET["book"];
+                $id = isset($_GET["book"])? $_GET["book"] : null;
                 foreach ($sections as $section) {
                     if ($id == $section['book_id']) {
                         echo "<tr>";
@@ -131,7 +130,7 @@ switch ($action) {
         <div class="modal fade" id="update_<?= $section['id'] ?>">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form action="section.php?action=edit&section=<?= $section['id'] ?>" method="POST">
+                    <form action="section.php?action=edit&book=<?= $section['book_id'] ?>&section=<?= $section['id'] ?>" method="POST">
                         <div class="modal-header">
                             <h3 class="modal-title">Update</h3>
                         </div>
