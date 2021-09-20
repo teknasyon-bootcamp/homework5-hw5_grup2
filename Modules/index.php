@@ -1,5 +1,5 @@
-<?php 
-require_once __DIR__."/../vendor/autoload.php";
+<?php
+require_once __DIR__ . "/../vendor/autoload.php";
 
 use Database\DynamicDB;
 
@@ -111,27 +111,27 @@ switch ($action) {
             </thead>
             <tbody>
                 <!-- List created posts -->
-                <?php                
-                    // Show all books if there isn't any specific get request
+                <?php
+                // Show all books if there isn't any specific get request
 
-                    if (empty($books)) {
-                        foreach ($books as $book) {
-                            echo "<tr>";
-                            echo '<td>';
-                            echo '<a class="navbar-brand" href=section.php?book=' . $book['id'] . '>' . $book['name'] . "</a>";
-                            echo '</td>';
-                            echo '<td>' . $book['author'] . '</td>';
-                            echo '<td><button type="button" data-toggle="modal" data-target="#update_' . $book['id'] .'"class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span>Update</button>
+                foreach ($books as $book) {
+                    $book['id'] ??= $book['_id'];
+                    echo "<tr>";
+                    echo '<td>';
+                    echo '<a class="navbar-brand" href=section.php?book=' . $book['id'] . '>' . $book['name'] . "</a>";
+                    echo '</td>';
+                    echo '<td>' . $book['author'] . '</td>';
+                    echo '<td><button type="button" data-toggle="modal" data-target="#update_' . $book['id'] . '"class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span>Update</button>
                             <a href="index.php?action=delete&book=' . $book['id'] . '"class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Delete</a></td>';
-                            echo "</tr>";
-                        }
-                    }                    
-            
+                    echo "</tr>";
+                }
+
                 ?>
             </tbody>
         </table>
     </div>
     <?php foreach ($books as $book) : ?>
+        <?=$book['id'] ??= $book['_id'];?>
         <div class="modal fade" id="update_<?= $book['id'] ?>">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -196,4 +196,5 @@ switch ($action) {
         </div>
     </div>
 </body>
+
 </html>

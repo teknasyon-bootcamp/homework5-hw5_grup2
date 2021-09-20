@@ -111,6 +111,9 @@ switch ($action) {
                 <?php
                 $id = isset($_GET["book"])? $_GET["book"] : null;
                 foreach ($sections as $section) {
+
+                    $section['id'] ??= $section['_id'];
+                    
                     if ($id == $section['book_id']) {
                         echo "<tr>";
                         echo '<td>';
