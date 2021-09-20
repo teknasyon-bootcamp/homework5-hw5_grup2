@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/IDatabaseDriver.php';
+namespace Database;
 
 class MongoDB implements IDatabaseDriver
 {
