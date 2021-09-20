@@ -1,6 +1,6 @@
 <?php
 
-include "App/autoload.php";
+require_once __DIR__."App/autoload.php";
 
 use App\Logger\Logger;
 use App\Logger\FileLog;
