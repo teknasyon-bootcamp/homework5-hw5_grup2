@@ -15,13 +15,15 @@ class DynamicDB
         $user = $response["user"];
         $password = $response["password"];
         $options = $response["options"];
+        $protocol = '';
 
         if ($configDriver == "mysql") {
 
             $mySql = new MySQL($host, $user, $password, 'odev5');
             $this->driver = $mySql;
         } else {
-            # MongoDB Driver Buraya gelecek...
+            $mongoDB = new MongoDB($protocol, $host, $user, $password, 'odev5', $options);
+            $this->driver = $mongoDB;
         }
     }
     public function all(string $table): array
@@ -29,6 +31,10 @@ class DynamicDB
         return  $this->driver->all($table);
     }
     public function find(string $table, mixed $id): mixed
+    {
+        return $this->driver->find($table, $id);
+    }
+    public function where(string $table, string $columnName, mixed $id): mixed
     {
         return $this->driver->find($table, $id);
     }

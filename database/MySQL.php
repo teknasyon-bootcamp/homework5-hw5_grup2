@@ -31,6 +31,15 @@ class MySQL implements IDatabaseDriver
         return $pdoStatement->fetch(\PDO::FETCH_ASSOC);
     }
 
+    public function where(string $table, string $columnName, mixed $id): mixed
+    {
+        $pdoStatement = $this->pdo->prepare("SELECT * FROM $table WHERE $columnName = :$columnName");
+        $pdoStatement->bindParam(":$columnName", $id);
+        $pdoStatement-> execute();
+        return $pdoStatement->fetch(\PDO::FETCH_ASSOC);
+    }
+
+
     public function serialize($values): array
     {
         // Get properties of static class as array
