@@ -111,21 +111,7 @@ switch ($action) {
             </thead>
             <tbody>
                 <!-- List created posts -->
-                <?php
-                if (isset($_GET["book"])) {
-
-                    $id = $_GET["book"];
-
-                    $book= $database->find('books',$id);
-
-                    if (is_null($book)) {
-                        echo "Kitap Bulunamadı";
-                    } else {
-
-                        echo '<td>' . $book['name'] . '</td>';
-                        echo '<td>' . $book['author'] . '</td>';
-                    }
-                } else {
+                <?php                
                     // Show all books if there isn't any specific get request
 
                     if (empty($books)) {
@@ -140,7 +126,7 @@ switch ($action) {
                             echo "</tr>";
                         }
                     }                    
-                }
+            
                 ?>
             </tbody>
         </table>
