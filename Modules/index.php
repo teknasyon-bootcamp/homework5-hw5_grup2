@@ -1,5 +1,5 @@
 <?php 
-require_once __DIR__."/vendor/autoload.php";
+require_once __DIR__."/../vendor/autoload.php";
 
 use Database\DynamicDB;
 
@@ -127,16 +127,19 @@ switch ($action) {
                     }
                 } else {
                     // Show all books if there isn't any specific get request
-                    foreach ($books as $book) {
-                        echo "<tr>";
-                        echo '<td>';
-                        echo '<a class="navbar-brand" href=section.php?book=' . $book['id'] . '>' . $book['name'] . "</a>";
-                        echo '</td>';
-                        echo '<td>' . $book['author'] . '</td>';
-                        echo '<td><button type="button" data-toggle="modal" data-target="#update_' . $book['id'] .'"class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span>Update</button>
-                        <a href="index.php?action=delete&book=' . $book['id'] . '"class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Delete</a></td>';
-                        echo "</tr>";
-                    }
+
+                    if (empty($books)) {
+                        foreach ($books as $book) {
+                            echo "<tr>";
+                            echo '<td>';
+                            echo '<a class="navbar-brand" href=section.php?book=' . $book['id'] . '>' . $book['name'] . "</a>";
+                            echo '</td>';
+                            echo '<td>' . $book['author'] . '</td>';
+                            echo '<td><button type="button" data-toggle="modal" data-target="#update_' . $book['id'] .'"class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span>Update</button>
+                            <a href="index.php?action=delete&book=' . $book['id'] . '"class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Delete</a></td>';
+                            echo "</tr>";
+                        }
+                    }                    
                 }
                 ?>
             </tbody>
