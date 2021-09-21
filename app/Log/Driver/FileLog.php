@@ -9,7 +9,6 @@ class FileLog implements ILogDriver
     private $date;
     private $time;
 
-
     public function __construct(string $logPath)
     {
         $this->logPath = $logPath;
@@ -19,7 +18,6 @@ class FileLog implements ILogDriver
     {
         date_default_timezone_set('Europe/Istanbul');
         $this->time = date('d/m/Y G:i:s');
-
         $this->date = date('d-m-Y') . '.log';
     }
     public function log(string $message, int $level): void
@@ -30,6 +28,7 @@ class FileLog implements ILogDriver
             file_put_contents($this->logPath . '/' . $this->date, $data, FILE_APPEND);
         }
         $data = $level . " " . $this->time . " " . $message . PHP_EOL;
+        
         file_put_contents($this->logPath . '/' . $this->date, $data, FILE_APPEND);
 
         $this->tearDown();
