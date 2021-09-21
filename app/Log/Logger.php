@@ -1,20 +1,30 @@
 <?php
 
-namespace App\Logger;
+namespace App\Log;
 
-use App\Logger\ILoggable;
+use App\Log\Driver\ILogDriver;
+use App\Log\Driver\DatabaseLog;
+use App\Log\Driver\FileLog;
+use Database\DynamicDB;
 
 class Logger implements ILoggable
 {
-   protected $driver;
-   public function __construct($driver)
+   protected ILogDriver $driver;
+
+   public function __construct()
    {
-      $this->driver = $driver;
+      $response = require __DIR__ . '/../../config.php';
+
+      $logFile = __DIR__.'/../../storage/logs.log';
+   
+      $logDriver = $response["logging"];
+      if ($logDriver == "database") {
+         $this->driver = new DatabaseLog(new DynamicDB);
+      } elseif ($logDriver == 'file') {
+         $this->driver = new FileLog($logFile);
+      }
    }
-   protected function setDriver($driver): void
-   {
-      $this->driver = $driver;
-   }
+
    public function log(string $message, int $level): void
    {
       $this->driver->log($message, $level);
