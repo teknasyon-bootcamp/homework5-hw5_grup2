@@ -1,8 +1,9 @@
 <?php
-require_once __DIR__."/vendor/autoload.php";
+require_once __DIR__ . "/vendor/autoload.php";
 
 use Database\DynamicDB;
 use App\Log\Logger;
+use App\Backup\Export;
 
 
 $logger = new Logger;
@@ -37,6 +38,12 @@ if (isset($_POST['author'])) {
  */
 
 switch ($action) {
+
+    case 'backup':
+
+        Export::createBackupFile();
+        
+        break;
     case 'edit':
 
         $values = [
@@ -60,7 +67,7 @@ switch ($action) {
         header("Refresh:0; url=index.php");
         break;
     case 'delete':
-        $database->delete('books', $bookId);       
+        $database->delete('books', $bookId);
 
         header("Refresh:0; url=index.php");
         break;
@@ -105,6 +112,7 @@ switch ($action) {
         <h3 class="text-primary">BOOKS</h3>
         <hr style="border-top:1px dotted #ccc;" />
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#form_modal"><span class="glyphicon glyphicon-plus"></span> Add</button>
+        <a href="index.php?action=backup" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Export All Data </a>
         <br /><br />
         <table class="table table-bordered">
             <thead class="alert-info">
