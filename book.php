@@ -253,7 +253,7 @@ switch ($action) {
                         </td>
                         <td>
                             <a class="navbar-brand"> <?= $post['content'] ?></a>
-                        </td>section
+                        </td>
                         <td>
                             <button class="btn btn-warning" type="button" data-toggle="modal" data-target="#update_post_<?= $post['id'] ?>"><span class="glyphicon glyphicon-edit"></span>Update</button>
                             <a href="book.php?action=deletePost&book=<?= $post['book_id'] ?>&post=<?= $post['id'] ?>" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Delete</a>
