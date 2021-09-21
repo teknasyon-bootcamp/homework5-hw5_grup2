@@ -55,7 +55,7 @@ switch ($action) {
         header("Refresh:0; url=index.php");
         break;
     case 'delete':
-        $database->delete('books', $bookId);
+        $database->delete('books', $bookId);       
 
         header("Refresh:0; url=index.php");
         break;
@@ -115,10 +115,9 @@ switch ($action) {
                 // Show all books if there isn't any specific get request
 
                 foreach ($books as $book) {
-                    $book['id'] ??= $book['_id'];
                     echo "<tr>";
                     echo '<td>';
-                    echo '<a class="navbar-brand" href=section.php?book=' . $book['id'] . '>' . $book['name'] . "</a>";
+                    echo '<a class="navbar-brand" href=book.php?book=' . $book['id'] . '>' . $book['name'] . "</a>";
                     echo '</td>';
                     echo '<td>' . $book['author'] . '</td>';
                     echo '<td><button type="button" data-toggle="modal" data-target="#update_' . $book['id'] . '"class="btn btn-warning"><span class="glyphicon glyphicon-edit"></span>Update</button>
@@ -131,7 +130,6 @@ switch ($action) {
         </table>
     </div>
     <?php foreach ($books as $book) : ?>
-        <?=$book['id'] ??= $book['_id'];?>
         <div class="modal fade" id="update_<?= $book['id'] ?>">
             <div class="modal-dialog">
                 <div class="modal-content">
