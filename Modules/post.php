@@ -12,6 +12,7 @@ $posts = $database->all('posts');
 // Defines necessary variables for my post list and sets its default values
 $action = '';
 $postId = '';
+$book_id='';
 $title = '';
 $content = '';
 //get the value of action variable which was given in the url
@@ -20,6 +21,9 @@ if (isset($_GET['action'])) { //isset function checks whether a variable is decl
 }
 if (isset($_REQUEST['post'])) {
     $postId = $_REQUEST['post'];
+}
+if (isset($_POST['book_id'])) {
+    $book_id = $_POST['book_id'];
 }
 if (isset($_POST['title'])) {
     $title = $_POST['title'];
@@ -36,6 +40,7 @@ switch ($action) {
     case 'edit':
 
         $values = [
+            'book_id'=>$book_id,
             'title' => $title,
             'content' => $content,
         ];
@@ -47,6 +52,7 @@ switch ($action) {
         break;
     case 'create':
         $values = [
+            'book_id'=>$book_id,
             'title' => $title,
             'content' => $content,
         ];
@@ -113,14 +119,12 @@ switch ($action) {
             </thead>
             <tbody>
                 <!-- List created posts -->
+                
                 <?php
-                $id = $_GET["section"];
-                foreach ($sections as $section) {
-                    if ($id == $section['book_id']) {
+                $id = $_GET["post"];
+                foreach ($posts as $post) {
+                    if ($id == $post['book_id']) {
                         echo "<tr>";
-                        echo '<td>';
-                        echo '<a class="navbar-brand" href=post.php?section=' . $section['id'] . '>' . $section['title'] . "</a>";
-                        echo '</td>';
                         echo '<td><button class="btn btn-warning" type="button"data-toggle="modal" data-target="#update_' .  $section['id'] . '"><span class="glyphicon glyphicon-edit"></span>Update</button>'
                             . "\n" . '<a href="section.php?action=delete&section=' .  $section['id'] . '"class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span>Delete</a></td>';
                         echo "</tr>";
@@ -128,6 +132,8 @@ switch ($action) {
                 }
 
                 ?>
+
+               
                 <?php foreach ($posts as $post) : ?>
                     <?php $contentFirstPart = substr($post['content'], 0, 100);
                     $contentSecondPart = substr($post['content'], 100, strlen($post['content']));
