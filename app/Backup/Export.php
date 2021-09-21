@@ -23,7 +23,7 @@ class Export
         $json = json_encode($backupArray, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 
         $backupPath = __DIR__ . '/../../storage/backups/backup.json';
-        
+
         file_put_contents($backupPath, $json);
     }
 
@@ -33,9 +33,27 @@ class Export
 
         $data = file_get_contents($backupPath);
 
-        $dataArray = json_decode($data,$data);
+        $dataArray = json_decode($data, $data);
 
         $database = new DynamicDB();
+
+
+        // Delete all records...
+        foreach ($database->all('books') as $key => $book) {
+            $database->delete('books', $book['id']);
+        }
+
+        foreach ($database->all('book_posts') as $key => $post) {
+            $database->delete('book_posts', $post['id']);
+        }
+
+        foreach ($database->all('book_sections') as $key => $section) {
+            $database->delete('book_sections', $section['id']);
+        }
+
+
+        // Generate 
+
 
         foreach ($dataArray['books'] as $key => $book) {
 
@@ -44,7 +62,7 @@ class Export
                 'author' => $book['author']
             ];
 
-            $database->create('books',$values);
+            $database->create('books', $values);
         }
 
         foreach ($dataArray['sections'] as $key => $section) {
@@ -54,7 +72,7 @@ class Export
                 'book_id' => $section['book_id']
             ];
 
-            $database->create('book_sections',$values);
+            $database->create('book_sections', $values);
         }
 
         foreach ($dataArray['posts'] as $key => $post) {
@@ -65,7 +83,7 @@ class Export
                 'content' => $post['content']
             ];
 
-            $database->create('book_posts',$values);
+            $database->create('book_posts', $values);
         }
     }
 }
