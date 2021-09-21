@@ -2,6 +2,8 @@
 
 namespace Database;
 
+use App\Log\Logger;
+
 class MySQL implements IDatabaseDriver
 {
     protected \PDO $pdo;
@@ -10,24 +12,25 @@ class MySQL implements IDatabaseDriver
     {
         try {
             $this->pdo = new \PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
-        }catch (\PDOException $exception){
-            echo $exception->getMessage();
-            exit('Murphy Rules :( ');
+        } catch (\PDOException $exception) {
+            $logger = new Logger;
+            $logger->log($exception->getMessage(), Logger::WARNING);
+            exit('Cannot connect the database. Murphy Rules :( ');
         }
     }
 
     public function all(string $table): array
     {
-       $pdoStatement = $this->pdo->prepare("SELECT * FROM $table");
-       $pdoStatement->execute();
-       return $pdoStatement->fetchAll(\PDO::FETCH_ASSOC);
+        $pdoStatement = $this->pdo->prepare("SELECT * FROM $table");
+        $pdoStatement->execute();
+        return $pdoStatement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     public function find(string $table, mixed $id): mixed
     {
         $pdoStatement = $this->pdo->prepare("SELECT * FROM $table WHERE id = :id");
         $pdoStatement->bindParam(":id", $id);
-        $pdoStatement-> execute();
+        $pdoStatement->execute();
         return $pdoStatement->fetch(\PDO::FETCH_ASSOC);
     }
 
@@ -35,7 +38,7 @@ class MySQL implements IDatabaseDriver
     {
         $pdoStatement = $this->pdo->prepare("SELECT * FROM $table WHERE $columnName = :$columnName");
         $pdoStatement->bindParam(":$columnName", $id);
-        $pdoStatement-> execute();
+        $pdoStatement->execute();
         return $pdoStatement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
@@ -89,13 +92,13 @@ class MySQL implements IDatabaseDriver
             $pdoStatement->bindValue(":$param", $value);
         }
 
-        return $pdoStatement-> execute();
+        return $pdoStatement->execute();
     }
 
     public function update(string $table, mixed $id, array $values): bool
     {
         $serialize = $this->serialize($values);
-        
+
         $query = "UPDATE " . $table . " SET " . $serialize['setParams'] . " WHERE id=:id";
 
         $pdoStatement = $this->pdo->prepare($query);
