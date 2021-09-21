@@ -5,33 +5,38 @@ namespace App\Log\Driver;
 
 class FileLog implements ILogDriver
 {
-    protected string $logFile;
+    protected string $logPath;
+    private $date;
+    private $time;
 
-    public function __construct(string $logFile = "")
-    {
-        $this->logFile = $classesPath = realpath('./') . $logFile . '/' . date("Y-m-d") . '.log';
-    }
 
-    protected function setLogFile(string $logFile): void
+    public function __construct(string $logPath)
     {
-        $this->logFile = $logFile;
+        $this->logPath = $logPath;
     }
 
     public function setUp(): void
     {
+        date_default_timezone_set('Europe/Istanbul');
+        $this->time = date('d/m/Y G:i:s');
+
+        $this->date = date('d-m-Y') . '.log';
     }
     public function log(string $message, int $level): void
     {
-        $date = date("Y-m-d h:i:sa");
-        if (!file_exists($this->logFile)) {
-            $data = ILogDriver::INFO . " " . $date . " " . "Log dosyası oluşturuldu" . PHP_EOL;
-            file_put_contents($this->logFile, $data, FILE_APPEND);
+        $this->setUp();
+        if (!file_exists($this->logPath . '/' . $this->date)) {
+            $data = ILogDriver::INFO . " " . $this->time . " " . "Log dosyası oluşturuldu" . PHP_EOL;
+            file_put_contents($this->logPath . '/' . $this->date, $data, FILE_APPEND);
         }
-        $data = $level . " " . $date . " " . $message . PHP_EOL;
-        file_put_contents($this->logFile, $data, FILE_APPEND);
+        $data = $level . " " . $this->time . " " . $message . PHP_EOL;
+        file_put_contents($this->logPath . '/' . $this->date, $data, FILE_APPEND);
+
+        $this->tearDown();
     }
     public function tearDown(): void
     {
-        # code...
+        $data = ILogDriver::INFO . " " . $this->time . " " . "Log tamamlandı." . PHP_EOL;
+        file_put_contents($this->logPath . '/' . $this->date, $data, FILE_APPEND);
     }
 }

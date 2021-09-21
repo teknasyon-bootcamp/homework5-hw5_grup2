@@ -15,13 +15,13 @@ class Logger implements ILoggable
    {
       $response = require __DIR__ . '/../../config.php';
 
-      $logFile = __DIR__.'/../../storage/logs.log';
+      $logPath = __DIR__.'/../../storage/logs/';
    
       $logDriver = $response["logging"];
       if ($logDriver == "database") {
          $this->driver = new DatabaseLog(new DynamicDB);
       } elseif ($logDriver == 'file') {
-         $this->driver = new FileLog($logFile);
+         $this->driver = new FileLog($logPath);
       }
    }
 
