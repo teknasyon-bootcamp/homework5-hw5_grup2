@@ -36,7 +36,7 @@ class DynamicDB
     }
     public function where(string $table, string $columnName, mixed $id): mixed
     {
-        return $this->driver->find($table, $id);
+        return $this->driver->where($table, $columnName, $id);
     }
     public function create(string $table, array $values): bool
     {
