@@ -7,7 +7,8 @@ class DynamicDB
 
     public function __construct()
     {
-        $response = require_once __DIR__ . "/../config.php";
+        $response = require __DIR__ . "/../config.php";
+
         $configDriver = $response["engine"];
 
         $host = $response["host"];
