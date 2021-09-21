@@ -41,6 +41,9 @@ switch ($action) {
     case 'import':
 
         Export::importBackupFile();
+        // Sends a raw http header to the browser in a raw form
+        header("Refresh:0; url=index.php");
+
         break;
 
     case 'backup':

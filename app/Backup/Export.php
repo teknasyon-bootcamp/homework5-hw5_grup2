@@ -58,6 +58,7 @@ class Export
         foreach ($dataArray['books'] as $key => $book) {
 
             $values = [
+                'id' => $book['id'],
                 'name' => $book['name'],
                 'author' => $book['author']
             ];
