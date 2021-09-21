@@ -25,7 +25,7 @@ class MongoDB implements IDatabaseDriver
         $collection = $db->$table;
         $results = $collection->find()->toArray();
 
-        // Prevents id and _id  keys conflict 
+        // Prevents id and _id  keys conflict.
         foreach ($results as $key => $record) {
             $results[$key]['id'] = $record['_id'];
         }
@@ -47,7 +47,7 @@ class MongoDB implements IDatabaseDriver
         $collection = $db->$table;
         $results = $collection->find([$columnName => $id])->toArray();
 
-        // Prevents id and _id  keys conflict 
+        // Prevents id and _id  keys conflict.
         foreach ($results as $key => $record) {
             $results[$key]['id'] = $record['_id'];
         }
