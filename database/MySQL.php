@@ -36,7 +36,7 @@ class MySQL implements IDatabaseDriver
         $pdoStatement = $this->pdo->prepare("SELECT * FROM $table WHERE $columnName = :$columnName");
         $pdoStatement->bindParam(":$columnName", $id);
         $pdoStatement-> execute();
-        return $pdoStatement->fetch(\PDO::FETCH_ASSOC);
+        return $pdoStatement->fetchAll(\PDO::FETCH_ASSOC);
     }
 
 
