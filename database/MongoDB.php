@@ -23,8 +23,14 @@ class MongoDB implements IDatabaseDriver
     {
         $db = $this->client->selectDatabase($this->dbname);
         $collection = $db->$table;
-        $result = $collection->find()->toArray();
-        return $result;
+        $results = $collection->find()->toArray();
+
+        // Prevents id and _id  keys conflict 
+        foreach ($results as $key => $record) {
+            $results[$key]['id'] = $record['_id'];
+        }
+
+        return $results;
     }
 
     public function find(string $table, mixed $id): mixed
@@ -35,12 +41,18 @@ class MongoDB implements IDatabaseDriver
         return $result;
     }
 
-    public function where(string $table, string $columnName, mixed $id): mixed
+    public function where(string $table, string $columnName, mixed $id): array
     {
         $db = $this->client->selectDatabase($this->dbname);
         $collection = $db->$table;
-        $result = $collection->findOne([$columnName => new \MongoDB\BSON\ObjectId($id)]);
-        return $result;
+        $results = $collection->find(['book_id' => $id])->toArray();
+
+        // Prevents id and _id  keys conflict 
+        foreach ($results as $key => $record) {
+            $results[$key]['id'] = $record['_id'];
+        }
+
+        return $results;
     }
 
     public function create(string $table, array $values): bool
