@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Driver;
+namespace App\Log\Driver;
 
 
 class FileLog implements ILogDriver
