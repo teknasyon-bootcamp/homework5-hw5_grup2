@@ -38,11 +38,15 @@ if (isset($_POST['author'])) {
  */
 
 switch ($action) {
+    case 'import':
+
+        Export::importBackupFile();
+        break;
 
     case 'backup':
 
         Export::createBackupFile();
-        
+
         break;
     case 'edit':
 
@@ -113,6 +117,7 @@ switch ($action) {
         <hr style="border-top:1px dotted #ccc;" />
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#form_modal"><span class="glyphicon glyphicon-plus"></span> Add</button>
         <a href="index.php?action=backup" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Export All Data </a>
+        <a href="index.php?action=import" class="btn btn-danger"><span class="glyphicon glyphicon-plus"></span> Import All Data </a>
         <br /><br />
         <table class="table table-bordered">
             <thead class="alert-info">
