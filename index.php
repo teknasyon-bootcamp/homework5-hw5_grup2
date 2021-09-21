@@ -2,6 +2,11 @@
 require_once __DIR__."/vendor/autoload.php";
 
 use Database\DynamicDB;
+use App\Log\Logger;
+
+
+$logger = new Logger;
+$logger->log("Index.php'ye giriş yapıldı.", Logger::WARNING);
 
 $database = new DynamicDB;
 
